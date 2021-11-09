@@ -4,7 +4,7 @@ _base_ = [
 ]
 
 model = dict(
-    pretrained='pretrain/mit_b0.pth', decode_head=dict(num_classes=21))
+    pretrained='pretrain/mit_b0.pth', decode_head=dict(num_classes=20))
 
 # optimizer
 optimizer = dict(
@@ -30,4 +30,5 @@ lr_config = dict(
     min_lr=0.0,
     by_epoch=False)
 
-data = dict(samples_per_gpu=2, workers_per_gpu=2)
+# Batch-size = 8, using 2 GPUS
+data = dict(samples_per_gpu=4, workers_per_gpu=4)
