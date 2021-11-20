@@ -2,7 +2,7 @@
 _base_ = [
     '../_base_/models/fastfcn_r50-d32_jpu_psp.py',
     '../_base_/datasets/pascal_voc12.py', '../_base_/default_runtime.py',
-    '../_base_/schedules/schedule_40k.py'
+    '../_base_/schedules/schedule_80k.py'
 ]
 
 norm_cfg = dict(type='SyncBN', requires_grad=True)
@@ -33,4 +33,4 @@ model = dict(
 
 # Batch-size = 8, using 2 GPUS
 data = dict(samples_per_gpu=4, workers_per_gpu=4)
-dist_params = dict(port='29507')
+dist_params = dict(port='29509')

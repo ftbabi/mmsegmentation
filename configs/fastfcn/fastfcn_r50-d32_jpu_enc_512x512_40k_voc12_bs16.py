@@ -32,5 +32,7 @@ model = dict(
     test_cfg=dict(mode='whole'))
 
 # Batch-size = 8, using 2 GPUS
-data = dict(samples_per_gpu=4, workers_per_gpu=4)
-dist_params = dict(port='29507')
+data = dict(samples_per_gpu=8, workers_per_gpu=4)
+dist_params = dict(port='29508')
+
+optimizer = dict(type='SGD', lr=0.02, momentum=0.9, weight_decay=0.0005)
