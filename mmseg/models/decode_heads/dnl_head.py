@@ -15,6 +15,7 @@ class DisentangledNonLocal2d(NonLocal2d):
     """
 
     def __init__(self, *arg, temperature, **kwargs):
+        self.abl_mode = kwargs.pop('abl_mode', 'both')
         super().__init__(*arg, **kwargs)
         self.temperature = temperature
         self.conv_mask = nn.Conv2d(self.in_channels, 1, kernel_size=1)
@@ -79,7 +80,12 @@ class DisentangledNonLocal2d(NonLocal2d):
         unary_x = unary_x.permute(0, 2, 1).contiguous().reshape(
             n, self.inter_channels, 1, 1)
 
-        output = x + self.conv_out(y + unary_x)
+        if self.abl_mode == 'p':
+            output = x + self.conv_out(y)
+        elif self.abl_mode == 'u':
+            output = x + self.conv_out(unary_x)
+        else:
+            output = x + self.conv_out(y + unary_x)
 
         return output
 
@@ -105,6 +111,7 @@ class DNLHead(FCNHead):
                  use_scale=True,
                  mode='embedded_gaussian',
                  temperature=0.05,
+                 abl_mode='both',
                  **kwargs):
         super(DNLHead, self).__init__(num_convs=2, **kwargs)
         self.reduction = reduction
@@ -118,7 +125,8 @@ class DNLHead(FCNHead):
             conv_cfg=self.conv_cfg,
             norm_cfg=self.norm_cfg,
             mode=self.mode,
-            temperature=self.temperature)
+            temperature=self.temperature,
+            abl_mode=abl_mode)
 
     def forward(self, inputs):
         """Forward function."""
