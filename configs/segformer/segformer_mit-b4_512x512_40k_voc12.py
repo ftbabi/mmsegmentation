@@ -2,9 +2,7 @@ _base_ = ['./segformer_mit-b0_512x512_40k_voc12.py']
 
 # model settings
 model = dict(
-    pretrained='pretrain/mit_b5.pth',
+    pretrained='pretrain/mit_b4.pth',
     backbone=dict(
-        embed_dims=64, num_heads=[1, 2, 5, 8], num_layers=[3, 6, 40, 3]),
+        embed_dims=64, num_heads=[1, 2, 5, 8], num_layers=[3, 8, 27, 3]),
     decode_head=dict(in_channels=[64, 128, 320, 512]))
-
-dist_params = dict(port='295010')
